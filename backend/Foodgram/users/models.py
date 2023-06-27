@@ -6,14 +6,13 @@ from django.core.validators import RegexValidator
 class User(AbstractUser):
     """Модель представляющая пользователя."""
 
-
     email = models.EmailField(
         max_length=254,
         unique=True,
         verbose_name='Электронная почта'
     )
 
-    username_validator = RegexValidator(regex=r'^[\w.@+-]+\z', message='Можно использовать ТОЛЬКО буквенно-цифровые символы, а так же точку, собаку, плюс и дефис')
+    username_validator = RegexValidator(regex=r'^[\w.@+-]+$', message='Можно использовать ТОЛЬКО буквенно-цифровые символы, а так же точку, собаку, плюс и дефис')
     username = models.CharField(
         max_length=150,
         unique=True,
@@ -29,7 +28,7 @@ class User(AbstractUser):
     last_name = models.CharField(
         max_length=150,
         blank=True,
-        verbose_name='Имя пользователя'
+        verbose_name='Фамилия пользователя'
     )
 
     password_validator = RegexValidator(
