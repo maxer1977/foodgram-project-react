@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'reciepts',
-    'users',    
+    'users',
     'djoser',
     'django_filters'
 ]
