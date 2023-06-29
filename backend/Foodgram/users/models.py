@@ -33,7 +33,7 @@ class User(AbstractUser):
 
     password_validator = RegexValidator(
         regex=r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
-        message='Пароль должен содержать хотя бы одну букву и одну цифру и быть не менее 8 символов',
+        message='Пароль состоит только букв и цифрв. Должно быть хотя бы одна буква и одна цифра (не менее 8 символов)',
     )
     password = models.CharField(
         validators=[password_validator],
