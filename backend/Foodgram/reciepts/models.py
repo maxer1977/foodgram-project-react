@@ -83,6 +83,14 @@ class Reciepts(models.Model):
         verbose_name='Список тэгов',
         blank=True)
 
+    ingridients_list = models.ManyToManyField(
+        Ingridients,
+        through='IngridientList',
+        related_name='reciepts',
+        verbose_name='Список продуктов',
+        blank=True
+    )
+
     class Meta:
         verbose_name_plural = 'Рецепты'
         verbose_name = 'Рецепт'
@@ -178,7 +186,7 @@ class Shopping(models.Model):
                 f'- рецепт {self.reciept.title}')
 
 
-class Ingridient_lists(models.Model):
+class IngridientList(models.Model):
     """Модель для указания количества ингредиентов."""
 
     reciept = models.ForeignKey(
@@ -207,5 +215,5 @@ class Ingridient_lists(models.Model):
         verbose_name_plural = 'Списки ингридиентов'
 
     def __str__(self):
-        return (f'Рецепт - {self.reciept.title}')
+        return (f'Рецепт - {self.ingridient.ingridient}')
 

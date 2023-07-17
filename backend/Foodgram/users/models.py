@@ -16,6 +16,8 @@ class User(AbstractUser):
     username = models.CharField(
         max_length=150,
         unique=True,
+        blank=False,
+        null=False,
         validators=[username_validator],
         verbose_name='Сетевое имя пользователя'
     )
@@ -38,8 +40,13 @@ class User(AbstractUser):
     password = models.CharField(
         validators=[password_validator],
         max_length=150,
+        blank=False,
+        null=False,
         verbose_name='Пароль пользователя'
         )
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
     class Meta:
         verbose_name = 'Пользователь'

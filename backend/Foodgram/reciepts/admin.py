@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Ingridients, Tags, Reciepts, Subscriptions, Favorits, Shopping, Ingridient_lists
+from .models import Ingridients, Tags, Reciepts, Subscriptions, Favorits, Shopping, IngridientList
 
 
 class IngridientsAdmin(admin.ModelAdmin):
@@ -45,7 +45,7 @@ class ShoppingAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
-class Ingridient_listsAdmin(admin.ModelAdmin):
+class IngridientListAdmin(admin.ModelAdmin):
     list_display = ("pk", "reciept", "ingridient", "quantity")
     search_fields = ("reciept", "ingridient")
     list_filter = ("reciept", "ingridient")
@@ -55,7 +55,8 @@ class Ingridient_listsAdmin(admin.ModelAdmin):
 admin.site.register(Ingridients, IngridientsAdmin)
 admin.site.register(Tags, TagsAdmin)
 admin.site.register(Reciepts, RecieptsAdmin)
-admin.site.register(Subscriptions,SubscriptionsAdmin)
+admin.site.register(Subscriptions, SubscriptionsAdmin)
 admin.site.register(Favorits, FavoritsAdmin)
 admin.site.register(Shopping, ShoppingAdmin)
-admin.site.register(Ingridient_lists, Ingridient_listsAdmin)
+admin.site.register(IngridientList, IngridientListAdmin)
+
