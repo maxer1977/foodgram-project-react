@@ -1,6 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
+from django.db import models
 
 
 class User(AbstractUser):
@@ -12,7 +12,10 @@ class User(AbstractUser):
         verbose_name='Электронная почта'
     )
 
-    username_validator = RegexValidator(regex=r'^[\w.@+-]+$', message='Можно использовать ТОЛЬКО буквенно-цифровые символы, а так же точку, собаку, плюс и дефис')
+    username_validator = RegexValidator(
+        regex=r'^[\w.@+-]+$',
+        message=('Можно использовать ТОЛЬКОбуквенно-цифровые '
+                 'символы, а так же точку, собаку, плюс и дефис'))
     username = models.CharField(
         max_length=150,
         unique=True,
@@ -35,7 +38,9 @@ class User(AbstractUser):
 
     password_validator = RegexValidator(
         regex=r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
-        message='Пароль состоит только букв и цифрв. Должно быть хотя бы одна буква и одна цифра (не менее 8 символов)',
+        message=('Пароль состоит только букв и цифрв. '
+                 'Должно быть хотя бы одна буква и одна цифра '
+                 '(не менее 8 символов)')
     )
     password = models.CharField(
         validators=[password_validator],

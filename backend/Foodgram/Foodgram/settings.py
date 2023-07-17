@@ -1,5 +1,4 @@
 from pathlib import Path
-from datetime import timedelta
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -139,11 +138,10 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'users.User'
 
-DJOSER = {
+DJOSER ={
     'HIDE_USERS': False,
     'USER': 'users.User',
     'PERMISSIONS': {
-
         'activation': ['rest_framework.permissions.AllowAny'],
         'password_reset': ['rest_framework.permissions.AllowAny'],
         'password_reset_confirm': ['rest_framework.permissions.AllowAny'],
@@ -157,8 +155,7 @@ DJOSER = {
 #        'user_list': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
         'user_list': ['rest_framework.permissions.AllowAny'],
         'token_create': ['rest_framework.permissions.AllowAny'],
-        'token_destroy': ['rest_framework.permissions.IsAuthenticated'],
-    },
+        'token_destroy': ['rest_framework.permissions.IsAuthenticated'], },
     'SERIALIZERS': {
         'user_create': 'api.serializers.CustomUserCreateSerializer',
         'activation': 'djoser.serializers.ActivationSerializer',
@@ -179,18 +176,5 @@ DJOSER = {
 #        'current_user': 'djoser.serializers.UserSerializer',
         'current_user': 'api.serializers.CustomUserSerializer',
         'token': 'djoser.serializers.TokenSerializer',
-        'token_create': 'djoser.serializers.TokenCreateSerializer',
-
-
-    },
-    # 'VIEWS': {
-    #     'user_list': 'api.views.UserViewSet',
-    # },
-}
-
-# JWT settings
-
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
-    'AUTH_HEADER_TYPES': ('Bearer',),
-}
+        'token_create': 'djoser.serializers.TokenCreateSerializer', }
+    }

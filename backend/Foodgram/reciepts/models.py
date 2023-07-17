@@ -1,8 +1,6 @@
+from django.core.validators import MinValueValidator
 from django.db import models
-
 from users.models import User
-
-from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Ingridients(models.Model):
@@ -16,7 +14,7 @@ class Ingridients(models.Model):
         max_length=100,
         blank=True,
         verbose_name='Единица измерения')
-    
+
     class Meta:
         verbose_name_plural = 'Ингридиенты'
         verbose_name = 'Ингридиент'
@@ -211,9 +209,12 @@ class IngridientList(models.Model):
     )
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['ingridient', 'reciept'],
+                                    name='not_unique_ingridient_list')
+        ]
         verbose_name = 'Список ингридиентов'
         verbose_name_plural = 'Списки ингридиентов'
 
     def __str__(self):
         return (f'Рецепт - {self.ingridient.ingridient}')
-
