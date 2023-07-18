@@ -219,7 +219,7 @@ class CustomUserViewSet(UserViewSet):
     @action(
         detail=True,
         methods=['post', 'delete'],
-        permission_classes=[AllowAny],
+        permission_classes=[IsAuthenticated],
         url_path='subscribe',
         url_name='subscribe',
     )
