@@ -72,8 +72,7 @@ class Reciepts(models.Model):
     image = models.ImageField(
         upload_to='images/',
         null=True,
-        default=None
-        )
+        default=None)
 
     tag_list = models.ManyToManyField(
         Tags,

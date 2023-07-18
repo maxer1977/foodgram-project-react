@@ -47,8 +47,7 @@ class User(AbstractUser):
         max_length=150,
         blank=False,
         null=False,
-        verbose_name='Пароль пользователя'
-        )
+        verbose_name='Пароль пользователя')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
