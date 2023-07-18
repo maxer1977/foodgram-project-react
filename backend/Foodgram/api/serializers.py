@@ -228,7 +228,6 @@ class SubscriptionsSerializer(CustomUserSerializer):
 
     def get_recipes(self, obj):
         author = obj
-        # author = self.request.user
         recipes = author.reciepts.all()
         serializer = ShortRecieptsSerializer(recipes, many=True)
         return serializer.data

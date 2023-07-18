@@ -198,21 +198,23 @@ class CustomUserViewSet(UserViewSet):
     @action(
         detail=False,
         methods=('get',),
-        permission_classes=[AllowAny],
+        permission_classes=[IsAuthenticated],
         url_path='subscriptions',
         url_name='subscriptions',
     )
     def subscriptions(self, request):
         """Список подписок"""
 
-        authors = User.objects.filter(following__user=self.request.user)
-        if authors:
+        queryset = User.objects.filter(following__user=self.request.user)
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
             serializer = SubscriptionsSerializer(
-                many=True, data=authors, context={'request': request})
-            serializer.is_valid()
-            return Response(serializer.data)
-        return Response('Нет подписок!',
-                        status=status.HTTP_400_BAD_REQUEST)
+                page, many=True, context={'request': request})
+            return self.get_paginated_response(serializer.data)
+        serializer = SubscriptionsSerializer(
+            queryset, many=True, context={'request': request})
+        return Response(serializer.data)
 
     @action(
         detail=True,
