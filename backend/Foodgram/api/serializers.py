@@ -37,6 +37,15 @@ class CustomUserSerializer(UserSerializer):
             return False
         return Subscriptions.objects.filter(user=user, author=obj.id).exists()
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        recipes_limit = int(self.context['request'].GET.get(
+            'recipes_limit', 0))
+        if recipes_limit:
+            representation['recipes'] = representation[
+                'recipes'][:recipes_limit]
+        return representation
+
 
 class CustomUserCreateSerializer(UserCreateSerializer):
     """Сериализатор для записи информации User."""
@@ -214,11 +223,12 @@ class SubscriptionsSerializer(CustomUserSerializer):
                   'is_subscribed', 'recipes', 'recipes_count')
 
     def get_recipes_count(self, obj):
-        author = self.context['view'].get_object()
+        author = obj
         return author.reciepts.count()
 
     def get_recipes(self, obj):
-        author = self.context['view'].get_object()
+        author = obj
+        # author = self.request.user
         recipes = author.reciepts.all()
         serializer = ShortRecieptsSerializer(recipes, many=True)
         return serializer.data
