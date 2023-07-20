@@ -4,14 +4,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('reciepts', '0002_initial'),
+        ("reciepts", "0002_initial"),
     ]
 
     operations = [
         migrations.AddConstraint(
-            model_name='ingridientlist',
-            constraint=models.UniqueConstraint(fields=('ingridient', 'reciept'), name='not_unique_ingridient_list'),
+            model_name="ingridientlist",
+            constraint=models.UniqueConstraint(
+                fields=("ingridient", "reciept"), name="not_unique_ingridient_list"
+            ),
         ),
     ]

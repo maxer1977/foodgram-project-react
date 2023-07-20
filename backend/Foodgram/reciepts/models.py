@@ -7,17 +7,15 @@ class Ingridients(models.Model):
     """Модель для коллекции ингридиентов."""
 
     ingridient = models.CharField(
-        max_length=150,
-        blank=True,
-        verbose_name='Название продукта')
+        max_length=150, blank=True, verbose_name="Название продукта"
+    )
     measure = models.CharField(
-        max_length=100,
-        blank=True,
-        verbose_name='Единица измерения')
+        max_length=100, blank=True, verbose_name="Единица измерения"
+    )
 
     class Meta:
-        verbose_name_plural = 'Ингридиенты'
-        verbose_name = 'Ингридиент'
+        verbose_name_plural = "Ингридиенты"
+        verbose_name = "Ингридиент"
 
     def __str__(self):
         return self.ingridient[:20]
@@ -27,20 +25,16 @@ class Tags(models.Model):
     """Модель для тэгов."""
 
     name = models.CharField(
-        max_length=50,
-        blank=True,
-        unique=True,
-        verbose_name='Название тэга')
+        max_length=50, blank=True, unique=True, verbose_name="Название тэга"
+    )
     color = models.CharField(
-        max_length=16,
-        blank=True,
-        unique=True,
-        verbose_name='Цвет тэга')
+        max_length=16, blank=True, unique=True, verbose_name="Цвет тэга"
+    )
     slug = models.SlugField(unique=True, max_length=20)
 
     class Meta:
-        verbose_name_plural = 'Тэги'
-        verbose_name = 'Тэг'
+        verbose_name_plural = "Тэги"
+        verbose_name = "Тэг"
 
     def __str__(self):
         return self.name[:20]
@@ -51,46 +45,42 @@ class Reciepts(models.Model):
 
     author = models.ForeignKey(
         User,
-        related_name='reciepts',
+        related_name="reciepts",
         on_delete=models.CASCADE,
-        verbose_name='Автор рецепта')
+        verbose_name="Автор рецепта",
+    )
 
     title = models.CharField(
-        max_length=150,
-        blank=True,
-        verbose_name='Название рецепта')
+        max_length=150, blank=True, verbose_name="Название рецепта"
+    )
 
     pub_date = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name='Дата публикации рецепта')
+        auto_now_add=True, verbose_name="Дата публикации рецепта"
+    )
 
-    text = models.TextField(verbose_name='Описание рецепта')
+    text = models.TextField(verbose_name="Описание рецепта")
 
     duration = models.PositiveSmallIntegerField(
-        verbose_name='Длительность приготовления в минутах')
+        verbose_name="Длительность приготовления в минутах"
+    )
 
-    image = models.ImageField(
-        upload_to='images/',
-        null=True,
-        default=None)
+    image = models.ImageField(upload_to="images/", null=True, default=None)
 
     tag_list = models.ManyToManyField(
-        Tags,
-        related_name='reciepts',
-        verbose_name='Список тэгов',
-        blank=True)
+        Tags, related_name="reciepts", verbose_name="Список тэгов", blank=True
+    )
 
     ingridients_list = models.ManyToManyField(
         Ingridients,
-        through='IngridientList',
-        related_name='reciepts',
-        verbose_name='Список продуктов',
-        blank=True
+        through="IngridientList",
+        related_name="reciepts",
+        verbose_name="Список продуктов",
+        blank=True,
     )
 
     class Meta:
-        verbose_name_plural = 'Рецепты'
-        verbose_name = 'Рецепт'
+        verbose_name_plural = "Рецепты"
+        verbose_name = "Рецепт"
 
     def __str__(self):
         return self.title[:20]
@@ -102,27 +92,29 @@ class Subscriptions(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        verbose_name='Подписчик',
-        related_name='follower',
+        verbose_name="Подписчик",
+        related_name="follower",
     )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        verbose_name='Автор',
-        related_name='following',
+        verbose_name="Автор",
+        related_name="following",
     )
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['user', 'author'],
-                                    name='not_unique_subscription')
+            models.UniqueConstraint(
+                fields=["user", "author"], name="not_unique_subscription"
+            )
         ]
-        verbose_name = 'Подписка'
-        verbose_name_plural = 'Подписки'
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"
 
     def __str__(self):
-        return (f'Автор {self.author.get_username} '
-                f'- подписчик {self.user.get_username}')
+        return (
+            f"Автор {self.author.get_username} " f"- подписчик {self.user.get_username}"
+        )
 
 
 class Favorits(models.Model):
@@ -131,27 +123,29 @@ class Favorits(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        verbose_name='Подписчик',
-        related_name='favorits',
+        verbose_name="Подписчик",
+        related_name="favorits",
     )
     reciept = models.ForeignKey(
         Reciepts,
         on_delete=models.CASCADE,
-        verbose_name='Рецепт',
-        related_name='favorit',
+        verbose_name="Рецепт",
+        related_name="favorit",
     )
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['user', 'reciept'],
-                                    name='not_unique_favorit')
+            models.UniqueConstraint(
+                fields=["user", "reciept"], name="not_unique_favorit"
+            )
         ]
-        verbose_name = 'Избранное'
-        verbose_name_plural = 'Избранные'
+        verbose_name = "Избранное"
+        verbose_name_plural = "Избранные"
 
     def __str__(self):
-        return (f'Пользователь {self.user.get_username} '
-                f'- рецепт {self.reciept.title}')
+        return (
+            f"Пользователь {self.user.get_username} " f"- рецепт {self.reciept.title}"
+        )
 
 
 class Shopping(models.Model):
@@ -160,27 +154,27 @@ class Shopping(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        verbose_name='Пользователь',
-        related_name='shopper',
+        verbose_name="Пользователь",
+        related_name="shopper",
     )
     reciept = models.ForeignKey(
         Reciepts,
         on_delete=models.CASCADE,
-        verbose_name='Рецепт',
-        related_name='shopping',
+        verbose_name="Рецепт",
+        related_name="shopping",
     )
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['user', 'reciept'],
-                                    name='not_unique_shopping_list')
+            models.UniqueConstraint(
+                fields=["user", "reciept"], name="not_unique_shopping_list"
+            )
         ]
-        verbose_name = 'Список покупок'
-        verbose_name_plural = 'Списки покупок'
+        verbose_name = "Список покупок"
+        verbose_name_plural = "Списки покупок"
 
     def __str__(self):
-        return (f'Покупатель {self.user.get_username} '
-                f'- рецепт {self.reciept.title}')
+        return f"Покупатель {self.user.get_username} " f"- рецепт {self.reciept.title}"
 
 
 class IngridientList(models.Model):
@@ -189,31 +183,29 @@ class IngridientList(models.Model):
     reciept = models.ForeignKey(
         Reciepts,
         on_delete=models.CASCADE,
-        verbose_name='Рецепт',
-        related_name='ingridient_lists',
+        verbose_name="Рецепт",
+        related_name="ingridient_lists",
     )
 
     ingridient = models.ForeignKey(
         Ingridients,
         on_delete=models.CASCADE,
-        verbose_name='Ингридиент',
-        related_name='ingridients',
+        verbose_name="Ингридиент",
+        related_name="ingridients",
     )
 
     quantity = models.PositiveSmallIntegerField(
-        validators=[
-            MinValueValidator(1)
-        ],
-        verbose_name='Количество'
+        validators=[MinValueValidator(1)], verbose_name="Количество"
     )
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['ingridient', 'reciept'],
-                                    name='not_unique_ingridient_list')
+            models.UniqueConstraint(
+                fields=["ingridient", "reciept"], name="not_unique_ingridient_list"
+            )
         ]
-        verbose_name = 'Список ингридиентов'
-        verbose_name_plural = 'Списки ингридиентов'
+        verbose_name = "Список ингридиентов"
+        verbose_name_plural = "Списки ингридиентов"
 
     def __str__(self):
-        return (f'Рецепт - {self.ingridient.ingridient}')
+        return f"Рецепт - {self.ingridient.ingridient}"
