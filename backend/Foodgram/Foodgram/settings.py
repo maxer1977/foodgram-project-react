@@ -11,7 +11,9 @@ SECRET_KEY = "django-insecure-t-$9^ta2z6aa^@7866!k_h&m3e0^*glv0oj#$m*a4+@h228-ao
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['kittygramer.ddns.net',]
+ALLOWED_HOSTS = [
+    "kittygramer.ddns.net",
+]
 
 
 # Application definition
@@ -120,7 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / 'collected_static'
+STATIC_ROOT = BASE_DIR / "collected_static"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
