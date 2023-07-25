@@ -13,7 +13,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
-    "kittygramer.ddns.net",
+    "foodgrammer.ddns.net",
 ]
 
 
