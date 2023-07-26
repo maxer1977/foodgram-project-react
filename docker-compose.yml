@@ -21,15 +21,15 @@ services:
     env_file: .env
     
     volumes:
-      - static:/app/backend_static
-      - media:/app/media
+      - static:/backend_static
+      - media:/media
 
   frontend:
     image: maxer77/foodgram_frontend
     env_file: .env
 
     volumes:
-      - static:/app/result_build
+      - static:/result_build
   
   gateway:
     image: maxer77/foodgram_gateway
