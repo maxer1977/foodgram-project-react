@@ -99,19 +99,20 @@ class RecieptsViewSet(viewsets.ModelViewSet):
         """Работа с Избранным."""
 
         serializer = ShortRecieptsSerializer(
-            data=request.data, context={"request": request, "view": self}
+            data=request.data, context={"request": request, "view": self, "func_name": "favorite"}
         )
-
+        
         recipe_id = self.kwargs["pk"]
         recipe = get_object_or_404(Reciepts, pk=recipe_id)
-
         user = self.request.user
 
         if request.method == "POST":
             if not Favorits.objects.filter(reciept=recipe, user=user).exists():
+                
                 serializer.is_valid(raise_exception=True)
                 serializer.save(reciept=recipe, user=user)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(
+                    serializer.data, status=status.HTTP_201_CREATED)
 
             return Response(
                 "Этот рецепт уже есть в Вашем избранном!",
@@ -136,7 +137,7 @@ class RecieptsViewSet(viewsets.ModelViewSet):
         """Работа со списком покупок."""
 
         serializer = ShortRecieptsSerializer(
-            data=request.data, context={"request": request, "view": self}
+            data=request.data, context={"request": request, "view": self, "func_name": "shopping"}
         )
 
         recipe_id = self.kwargs["pk"]

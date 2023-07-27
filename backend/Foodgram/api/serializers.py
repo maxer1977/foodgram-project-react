@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from reciepts.models import (
+    Favorits,
     IngridientList,
     Ingridients,
     Reciepts,
@@ -145,7 +146,11 @@ class ShortRecieptsSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = self.context["request"].user
         recipe = self.context["view"].get_object()
-        Shopping.objects.create(user=user, reciept=recipe)
+        print(self.context.get("func_name"))
+        if self.context.get("func_name") == "shopping":
+            Shopping.objects.create(user=user, reciept=recipe)
+        elif self.context.get("func_name") == "favorite":
+            Favorits.objects.create(user=user, reciept=recipe)
         return recipe
 
 
