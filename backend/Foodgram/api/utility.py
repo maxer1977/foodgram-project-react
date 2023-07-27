@@ -15,6 +15,8 @@ def favorited_or_shopping(context, obj, param):
     user = context.get("request").user
     if user.is_anonymous:
         return False
-    expression = "obj.{}.all().exists()".format(param)
+    expression = "obj.{}.filter(user=user).exists()".format(param)
+    
     result = eval(expression)
     return result
+ 
