@@ -36,13 +36,17 @@ class CustomUserSerializer(UserSerializer):
 
     class Meta:
         model = User
-        fields = ("email", "id", "username", "first_name", "last_name", "is_subscribed")
+        fields = (
+            "email", "id", "username", "first_name", "last_name", "is_subscribed")
 
     def get_is_subscribed(self, obj):
         user = self.context.get("request").user
+
+        print(user, obj)
+
         if user.is_anonymous:
             return False
-        return Subscriptions.objects.filter(user=user, author=obj.id).exists()
+        return Subscriptions.objects.filter(user=user, author=obj).exists()
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -97,7 +101,8 @@ class RecieptsSerializer(serializers.ModelSerializer):
 
     tags = TagsSerializer(many=True, source="tag_list")
     author = CustomUserSerializer(many=False)
-    ingredients = IngridientsListSerializer(many=True, source="ingridient_lists")
+    ingredients = IngridientsListSerializer(
+        many=True, source="ingridient_lists")
     is_favorited = serializers.SerializerMethodField()
     is_in_shopping_cart = serializers.SerializerMethodField()
     name = serializers.CharField(source="title")

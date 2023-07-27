@@ -147,7 +147,6 @@ class RecieptsViewSet(viewsets.ModelViewSet):
         if request.method == "POST":
             if not Shopping.objects.filter(reciept=recipe, user=user).exists():
                 serializer.is_valid(raise_exception=True)
-                print(serializer.validated_data)
                 serializer.save(reciept=recipe, user=user)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
 
