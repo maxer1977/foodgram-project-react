@@ -14,7 +14,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "foodgrammer.ddns.net",
-    "158.160.19.161"
+    "158.160.19.161",
+    "localhost"
 ]
 
 
