@@ -24,7 +24,7 @@ services:
     
     volumes:
       - static:/backend_static
-      - media:/app/media
+      - media:/media
 
   frontend:
     build:
@@ -52,5 +52,5 @@ services:
       - ../frontend/build:/usr/share/nginx/html/
       - ../docs/:/usr/share/nginx/html/api/docs/
       - static:/staticfiles
-      - media:/app/media
+      - media:/media
  
