@@ -35,18 +35,14 @@ services:
 
   
   gateway:
+
     image: maxer77/foodgram_gateway
     env_file: .env
+    
     depends_on:
       - backend
       - frontend
-    ports:
-      - 9000:80
-
-    volumes:
-    depends_on:
-      - backend
-      - frontend
+      
     ports:
       - 9000:80
 
