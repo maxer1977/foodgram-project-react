@@ -177,7 +177,7 @@ class NewRecieptsSerializer(serializers.ModelSerializer):
     tags = serializers.PrimaryKeyRelatedField(
         many=True, queryset=Tags.objects.all(), source="tag_list"
     )
-    image = Base64ImageField()
+    image = Base64ImageField(max_length=None, use_url=True)
     name = serializers.CharField(source="title")
     cooking_time = serializers.IntegerField(source="duration", min_value=1)
 
