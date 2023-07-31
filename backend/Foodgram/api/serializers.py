@@ -147,7 +147,7 @@ class ShortRecieptsSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = self.context["request"].user
         recipe = self.context["view"].get_object()
-        print(self.context.get("func_name"))
+
         if self.context.get("func_name") == "shopping":
             Shopping.objects.create(user=user, reciept=recipe)
         elif self.context.get("func_name") == "favorite":
