@@ -16,11 +16,22 @@ from rest_framework import serializers
 
 from .utility import favorited_or_shopping
 
+from django.conf import settings
+
 User = get_user_model()
 
 
 class Base64ImageField(serializers.ImageField):
     """Сериализатор для работы с изображениями."""
+
+    # image = serializers.SerializerMethodField()
+
+    # def get_image(self, obj):
+    #     if obj.image:
+    #         relative_path = obj.image.path.replace(settings.MEDIA_ROOT, "")
+    #         return settings.MEDIA_URL + relative_path
+    #     else:
+    #         return None
 
     def to_internal_value(self, data):
         if isinstance(data, str) and data.startswith("data:image"):
@@ -109,6 +120,8 @@ class RecieptsSerializer(serializers.ModelSerializer):
     is_in_shopping_cart = serializers.SerializerMethodField()
     name = serializers.CharField(source="title")
     cooking_time = serializers.CharField(source="duration")
+    image = serializers.SerializerMethodField()
+    
 
     class Meta:
         model = Reciepts
@@ -125,6 +138,12 @@ class RecieptsSerializer(serializers.ModelSerializer):
             "cooking_time",
         )
 
+    def get_image(self, obj):
+        # request = self.context.get('request')
+        image = obj.image.url
+        print(image)
+        return image
+
     def get_is_favorited(self, obj):
         param = "favorit"
         return favorited_or_shopping(self.context, obj, param)
@@ -139,6 +158,7 @@ class ShortRecieptsSerializer(serializers.ModelSerializer):
 
     name = serializers.CharField(source="title", read_only=True)
     cooking_time = serializers.CharField(source="duration", read_only=True)
+    
 
     class Meta:
         model = Reciepts
