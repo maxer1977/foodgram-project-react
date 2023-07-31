@@ -108,7 +108,6 @@ class RecieptsSerializer(serializers.ModelSerializer):
     is_in_shopping_cart = serializers.SerializerMethodField()
     name = serializers.CharField(source="title")
     cooking_time = serializers.CharField(source="duration")
-    image = serializers.SerializerMethodField()
 
     class Meta:
         model = Reciepts
@@ -132,9 +131,6 @@ class RecieptsSerializer(serializers.ModelSerializer):
     def get_is_in_shopping_cart(self, obj):
         param = "shopping"
         return favorited_or_shopping(self.context, obj, param)
-    
-    def get_image(self, obj):
-        return self.context['request'].build_absolute_uri(obj.image.url)
 
 
 class ShortRecieptsSerializer(serializers.ModelSerializer):
