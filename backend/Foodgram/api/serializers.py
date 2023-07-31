@@ -42,12 +42,13 @@ class CustomUserSerializer(UserSerializer):
 
     def get_is_subscribed(self, obj):
         user = self.context.get("request").user
-
-        print(user, obj)
+        print(user)
+        print(obj.author)
 
         if user.is_anonymous:
             return False
-        return Subscriptions.objects.filter(user=user, author=obj).exists()
+        print(Subscriptions.objects.filter(user=user, author=obj.author).exists())
+        return Subscriptions.objects.filter(user=user, author=obj.author).exists()
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -252,11 +253,12 @@ class SubscriptionsSerializer(CustomUserSerializer):
         )
 
     def get_recipes_count(self, obj):
-        author = obj
+        author = obj.author
         return author.reciepts.count()
 
     def get_recipes(self, obj):
-        author = obj
+        print(obj.author)
+        author = obj.author
         recipes = author.reciepts.all()
         serializer = ShortRecieptsSerializer(recipes, many=True)
         return serializer.data

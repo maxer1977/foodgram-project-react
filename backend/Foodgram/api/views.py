@@ -262,6 +262,7 @@ class CustomUserViewSet(UserViewSet):
             if not Subscriptions.objects.filter(author=author, user=user).exists():
                 serializer.is_valid(raise_exception=True)
                 serializer.save(author=author, user=user)
+
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(
                 "Автор уже пристутствует в подписке!",
