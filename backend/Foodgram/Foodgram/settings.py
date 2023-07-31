@@ -11,11 +11,10 @@ SECRET_KEY = "django-insecure-t-$9^ta2z6aa^@7866!k_h&m3e0^*glv0oj#$m*a4+@h228-ao
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['foodgrammer.ddns.net',]
-#     # 'localhost',
-#     # '127.0.0.1',
-#     '158.160.19.161',
-# ]
+ALLOWED_HOSTS = ['foodgrammer.ddns.net',
+                 'localhost',
+                 '127.0.0.1',
+                 '158.160.19.161']
 
 
 # Application definition
