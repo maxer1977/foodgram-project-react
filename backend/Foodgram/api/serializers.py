@@ -42,13 +42,13 @@ class CustomUserSerializer(UserSerializer):
 
     def get_is_subscribed(self, obj):
         user = self.context.get("request").user
-        print(user)
-        print(obj.author)
 
         if user.is_anonymous:
             return False
-        print(Subscriptions.objects.filter(user=user, author=obj.author).exists())
-        return Subscriptions.objects.filter(user=user, author=obj.author).exists()
+        elif isinstance(obj, Subscriptions):
+            return Subscriptions.objects.filter(user=user, author=obj.author).exists()
+        elif isinstance(obj, User):
+            return Subscriptions.objects.filter(user=user, author=obj).exists()
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -253,15 +253,24 @@ class SubscriptionsSerializer(CustomUserSerializer):
         )
 
     def get_recipes_count(self, obj):
-        author = obj.author
-        return author.reciepts.count()
+        if isinstance(obj, Subscriptions):
+            author = obj.author
+            return author.reciepts.count()
+        elif isinstance(obj, User):
+            author = obj
+            return author.reciepts.count()
 
     def get_recipes(self, obj):
-        print(obj.author)
-        author = obj.author
-        recipes = author.reciepts.all()
-        serializer = ShortRecieptsSerializer(recipes, many=True)
-        return serializer.data
+        if isinstance(obj, Subscriptions):
+            author = obj.author
+            recipes = author.reciepts.all()
+            serializer = ShortRecieptsSerializer(recipes, many=True)
+            return serializer.data
+        elif isinstance(obj, User):
+            author = obj
+            recipes = author.reciepts.all()
+            serializer = ShortRecieptsSerializer(recipes, many=True)
+            return serializer.data
 
     def create(self, validated_data):
         user = self.context["request"].user
