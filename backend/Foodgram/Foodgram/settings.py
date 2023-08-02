@@ -11,10 +11,7 @@ SECRET_KEY = "django-insecure-t-$9^ta2z6aa^@7866!k_h&m3e0^*glv0oj#$m*a4+@h228-ao
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['foodgrammer.ddns.net',
-                 'localhost',
-                 '127.0.0.1',
-                 '158.160.19.161']
+ALLOWED_HOSTS = ["foodgrammer.ddns.net", "localhost", "127.0.0.1", "158.160.19.161"]
 
 
 # Application definition
@@ -123,11 +120,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "static"
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

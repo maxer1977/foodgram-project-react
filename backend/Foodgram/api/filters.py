@@ -8,9 +8,11 @@ from .utility import filter_it
 class RecieptsFilterSet(django_filters.FilterSet):
     """Фильтры для списка рецептов."""
 
-    author = django_filters.NumberFilter(field_name="author__pk", lookup_expr="exact")
+    author = django_filters.NumberFilter(
+        field_name="author__pk", lookup_expr="exact")
     tags = django_filters.filters.ModelMultipleChoiceFilter(
-        queryset=Tags.objects.all(), field_name="tag_list__slug", to_field_name="slug"
+        queryset=Tags.objects.all(), field_name="tag_list__slug",
+        to_field_name="slug"
     )
     is_favorited = django_filters.NumberFilter(method="filter_is_favorited")
     is_in_shopping_cart = django_filters.NumberFilter(

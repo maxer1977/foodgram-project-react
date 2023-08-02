@@ -29,7 +29,8 @@ class TagsAdmin(admin.ModelAdmin):
 
 @admin.register(Reciepts)
 class RecieptsAdmin(admin.ModelAdmin):
-    list_display = ("pk", "author", "title", "pub_date", "text", "duration", "image")
+    list_display = ("pk", "author", "title", "pub_date",
+                    "text", "duration", "image")
     search_fields = ("author", "title", "text")
     list_filter = ("author", "title")
     empty_value_display = "-пусто-"

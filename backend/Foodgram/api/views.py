@@ -99,16 +99,16 @@ class RecieptsViewSet(viewsets.ModelViewSet):
         """Работа с Избранным."""
 
         serializer = ShortRecieptsSerializer(
-            data=request.data, context={"request": request, "view": self, "func_name": "favorite"}
+            data=request.data,
+            context={"request": request, "view": self, "func_name": "favorite"}
         )
-        
+
         recipe_id = self.kwargs["pk"]
         recipe = get_object_or_404(Reciepts, pk=recipe_id)
         user = self.request.user
 
         if request.method == "POST":
             if not Favorits.objects.filter(reciept=recipe, user=user).exists():
-                
                 serializer.is_valid(raise_exception=True)
                 serializer.save(reciept=recipe, user=user)
                 return Response(
@@ -123,7 +123,8 @@ class RecieptsViewSet(viewsets.ModelViewSet):
             favorite = get_object_or_404(Favorits, reciept=recipe, user=user)
             favorite.delete()
             return Response(
-                "Рецепт удален из избранного!", status=status.HTTP_204_NO_CONTENT
+                "Рецепт удален из избранного!",
+                status=status.HTTP_204_NO_CONTENT
             )
 
     @action(
@@ -137,7 +138,8 @@ class RecieptsViewSet(viewsets.ModelViewSet):
         """Работа со списком покупок."""
 
         serializer = ShortRecieptsSerializer(
-            data=request.data, context={"request": request, "view": self, "func_name": "shopping"}
+            data=request.data,
+            context={"request": request, "view": self, "func_name": "shopping"}
         )
 
         recipe_id = self.kwargs["pk"]
@@ -149,7 +151,8 @@ class RecieptsViewSet(viewsets.ModelViewSet):
             if not Shopping.objects.filter(reciept=recipe, user=user).exists():
                 serializer.is_valid(raise_exception=True)
                 serializer.save(reciept=recipe, user=user)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(
+                    serializer.data, status=status.HTTP_201_CREATED)
 
             return Response(
                 "Этот рецепт уже добавлен в список покупок!",
@@ -160,7 +163,8 @@ class RecieptsViewSet(viewsets.ModelViewSet):
             shopping = get_object_or_404(Shopping, reciept=recipe, user=user)
             shopping.delete()
             return Response(
-                "Рецепт удален из списка покупок!", status=status.HTTP_204_NO_CONTENT
+                "Рецепт удален из списка покупок!",
+                status=status.HTTP_204_NO_CONTENT
             )
 
     @action(
@@ -183,7 +187,8 @@ class RecieptsViewSet(viewsets.ModelViewSet):
         writer = csv.writer(output, delimiter="\t")
 
         writer.writerow(["Список покупок"])
-        writer.writerow(["N", "Название ингредиента", "Единица измерения", "Сумма"])
+        writer.writerow(
+            ["N", "Название ингредиента", "Единица измерения", "Всего"])
         n = 1
         for ingredient in ingredients:
             writer.writerow(
@@ -198,7 +203,7 @@ class RecieptsViewSet(viewsets.ModelViewSet):
         file_contents = output.getvalue()
 
         response = HttpResponse(content_type="text/plain")
-        response["Content-Disposition"] = 'attachment; filename="ingredients.txt"'
+        response["Content-Disposition"] = 'attachment; filename="i_list.txt"'
         response.write(file_contents)
         return response
 
@@ -256,21 +261,25 @@ class CustomUserViewSet(UserViewSet):
         if request.method == "POST":
             if user == author:
                 return Response(
-                    "Нельзя подписаться на себя!!", status=status.HTTP_400_BAD_REQUEST
+                    "Нельзя подписаться на себя!",
+                    status=status.HTTP_400_BAD_REQUEST
                 )
 
-            if not Subscriptions.objects.filter(author=author, user=user).exists():
+            if not Subscriptions.objects.filter(
+                    author=author, user=user).exists():
                 serializer.is_valid(raise_exception=True)
                 serializer.save(author=author, user=user)
 
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(
+                    serializer.data, status=status.HTTP_201_CREATED)
             return Response(
                 "Автор уже пристутствует в подписке!",
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
         elif request.method == "DELETE":
-            subscription = get_object_or_404(Subscriptions, author=author, user=user)
+            subscription = get_object_or_404(
+                Subscriptions, author=author, user=user)
             subscription.delete()
             return Response(
                 "Подписка успешно удалена!", status=status.HTTP_204_NO_CONTENT

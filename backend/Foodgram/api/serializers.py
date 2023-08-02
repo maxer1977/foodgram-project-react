@@ -16,22 +16,11 @@ from rest_framework import serializers
 
 from .utility import favorited_or_shopping
 
-from django.conf import settings
-
 User = get_user_model()
 
 
 class Base64ImageField(serializers.ImageField):
     """Сериализатор для работы с изображениями."""
-
-    # image = serializers.SerializerMethodField()
-
-    # def get_image(self, obj):
-    #     if obj.image:
-    #         relative_path = obj.image.path.replace(settings.MEDIA_ROOT, "")
-    #         return settings.MEDIA_URL + relative_path
-    #     else:
-    #         return None
 
     def to_internal_value(self, data):
         if isinstance(data, str) and data.startswith("data:image"):
@@ -48,8 +37,8 @@ class CustomUserSerializer(UserSerializer):
 
     class Meta:
         model = User
-        fields = (
-            "email", "id", "username", "first_name", "last_name", "is_subscribed")
+        fields = ("email", "id", "username", "first_name",
+                  "last_name", "is_subscribed")
 
     def get_is_subscribed(self, obj):
         user = self.context.get("request").user
@@ -57,16 +46,19 @@ class CustomUserSerializer(UserSerializer):
         if user.is_anonymous:
             return False
         elif isinstance(obj, Subscriptions):
-            return Subscriptions.objects.filter(user=user, author=obj.author).exists()
+            return Subscriptions.objects.filter(
+                user=user, author=obj.author).exists()
         elif isinstance(obj, User):
-            return Subscriptions.objects.filter(user=user, author=obj).exists()
+            return Subscriptions.objects.filter(
+                user=user, author=obj).exists()
 
     def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        recipes_limit = int(self.context["request"].GET.get("recipes_limit", 0))
+        represent = super().to_representation(instance)
+        recipes_limit = int(self.context["request"].GET.get(
+            "recipes_limit", 0))
         if recipes_limit:
-            representation["recipes"] = representation["recipes"][:recipes_limit]
-        return representation
+            represent["recipes"] = represent["recipes"][:recipes_limit]
+        return represent
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
@@ -74,7 +66,8 @@ class CustomUserCreateSerializer(UserCreateSerializer):
 
     class Meta:
         model = User
-        fields = ("email", "id", "username", "first_name", "last_name", "password")
+        fields = ("email", "id", "username", "first_name",
+                  "last_name", "password")
 
 
 class TagsSerializer(serializers.ModelSerializer):
@@ -121,7 +114,6 @@ class RecieptsSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source="title")
     cooking_time = serializers.CharField(source="duration")
     image = serializers.SerializerMethodField()
-    
 
     class Meta:
         model = Reciepts
@@ -139,9 +131,7 @@ class RecieptsSerializer(serializers.ModelSerializer):
         )
 
     def get_image(self, obj):
-        # request = self.context.get('request')
         image = obj.image.url
-        print(image)
         return image
 
     def get_is_favorited(self, obj):
@@ -158,7 +148,6 @@ class ShortRecieptsSerializer(serializers.ModelSerializer):
 
     name = serializers.CharField(source="title", read_only=True)
     cooking_time = serializers.CharField(source="duration", read_only=True)
-    
 
     class Meta:
         model = Reciepts
@@ -194,7 +183,8 @@ class NewIngridientsListSerializer(serializers.ModelSerializer):
 class NewRecieptsSerializer(serializers.ModelSerializer):
     """Сериализатор для нового рецепта Reciepts."""
 
-    ingredients = NewIngridientsListSerializer(many=True, source="ingridient_lists")
+    ingredients = NewIngridientsListSerializer(
+        many=True, source="ingridient_lists")
     tags = serializers.PrimaryKeyRelatedField(
         many=True, queryset=Tags.objects.all(), source="tag_list"
     )
@@ -204,7 +194,8 @@ class NewRecieptsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reciepts
-        fields = ("ingredients", "tags", "image", "name", "text", "cooking_time")
+        fields = ("ingredients", "tags", "image", "name",
+                  "text", "cooking_time")
 
     def create(self, validated_data):
         ingredients_data = validated_data.pop("ingridient_lists")

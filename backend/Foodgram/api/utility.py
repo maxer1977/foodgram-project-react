@@ -16,7 +16,6 @@ def favorited_or_shopping(context, obj, param):
     if user.is_anonymous:
         return False
     expression = "obj.{}.filter(user=user).exists()".format(param)
-    
+
     result = eval(expression)
     return result
- 

@@ -113,7 +113,8 @@ class Subscriptions(models.Model):
 
     def __str__(self):
         return (
-            f"Автор {self.author.get_username} " f"- подписчик {self.user.get_username}"
+            f"Автор {self.author.get_username} "
+            f"- подписчик {self.user.get_username}"
         )
 
 
@@ -144,7 +145,8 @@ class Favorits(models.Model):
 
     def __str__(self):
         return (
-            f"Пользователь {self.user.get_username} " f"- рецепт {self.reciept.title}"
+            f"Пользователь {self.user.get_username} "
+            f"- рецепт {self.reciept.title}"
         )
 
 
@@ -174,7 +176,8 @@ class Shopping(models.Model):
         verbose_name_plural = "Списки покупок"
 
     def __str__(self):
-        return f"Покупатель {self.user.get_username} " f"- рецепт {self.reciept.title}"
+        return (f"Покупатель {self.user.get_username} "
+                f"- рецепт {self.reciept.title}")
 
 
 class IngridientList(models.Model):
@@ -201,7 +204,8 @@ class IngridientList(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["ingridient", "reciept"], name="not_unique_ingridient_list"
+                fields=["ingridient", "reciept"],
+                name="not_unique_ingridient_list"
             )
         ]
         verbose_name = "Список ингридиентов"
