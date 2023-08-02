@@ -47,7 +47,7 @@ jobs:
         DB_PORT: 5432
       run: |
         cd backend/Foodgram/
-        python -m flake8 .
+        python -m flake8
 
   build_and_push_to_docker_hub:
     name: Push backend Docker image to DockerHub

@@ -5,15 +5,8 @@ from django.db.models import Sum
 from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
-from reciepts.models import (
-    Favorits,
-    IngridientList,
-    Ingridients,
-    Reciepts,
-    Shopping,
-    Subscriptions,
-    Tags,
-)
+from reciepts.models import (Favorits, IngridientList, Ingridients, Reciepts,
+                             Shopping, Subscriptions, Tags)
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
@@ -24,16 +17,10 @@ from users.models import User
 from .filters import IngridientListFilterSet, RecieptsFilterSet
 from .paginator import CustomPaginator
 from .permissions import IsAuthorOrReadOnly
-from .serializers import (
-    CustomUserSerializer,
-    IngridientsListSerializer,
-    IngridientsSerializer,
-    NewRecieptsSerializer,
-    RecieptsSerializer,
-    ShortRecieptsSerializer,
-    SubscriptionsSerializer,
-    TagsSerializer,
-)
+from .serializers import (CustomUserSerializer, IngridientsListSerializer,
+                          IngridientsSerializer, NewRecieptsSerializer,
+                          RecieptsSerializer, ShortRecieptsSerializer,
+                          SubscriptionsSerializer, TagsSerializer)
 
 
 class TagsViewSet(viewsets.ModelViewSet):

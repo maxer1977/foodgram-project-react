@@ -3,15 +3,8 @@ import base64
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
 from djoser.serializers import UserCreateSerializer, UserSerializer
-from reciepts.models import (
-    Favorits,
-    IngridientList,
-    Ingridients,
-    Reciepts,
-    Shopping,
-    Subscriptions,
-    Tags,
-)
+from reciepts.models import (Favorits, IngridientList, Ingridients, Reciepts,
+                             Shopping, Subscriptions, Tags)
 from rest_framework import serializers
 
 from .utility import favorited_or_shopping
