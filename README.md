@@ -60,22 +60,24 @@ DB_PORT                 # 5432 (порт по умолчанию)
 ```
 sudo docker compose up -d
 ```
-После успешной сборки выполнить миграции:
+- Выполнить миграции:
+```
 sudo docker compose exec backend python manage.py migrate
-Создать суперпользователя:
+```
+- Создать суперпользователя:
+```
 sudo docker compose exec backend python manage.py createsuperuser
-Собрать статику:
+```
+- Собрать статику:
+```
 sudo docker compose exec backend python manage.py collectstatic --noinput
-Наполнить базу данных содержимым из файла ingredients.json:
-sudo docker compose exec backend python manage.py loaddata ingredients.json
-Для остановки контейнеров Docker:
-sudo docker compose down -v      # с их удалением
-sudo docker compose stop         # без удаления
-После каждого обновления репозитория (push в ветку master) будет происходить:
-Проверка кода на соответствие стандарту PEP8 (с помощью пакета flake8)
-Сборка и доставка докер-образов frontend и backend на Docker Hub
-Разворачивание проекта на удаленном сервере
-Отправка сообщения в Telegram в случае успеха
+```
+
+После каждого обновления репозитория (ветка master) автоматически выполняется
+сборка и доставка докер-образов frontend и backend на Docker Hub, затем
+разворачивание обновленного проекта на удаленном сервере
+Дополнительно реализована отправка сообщения в Telegram при успешном
+разворачивании проекта
 
 
 ### API-endpoints
