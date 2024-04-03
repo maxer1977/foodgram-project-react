@@ -1,20 +1,9 @@
-# praktikum_new_diplom
+# **Каталог рецептов - Foodgram**
 
-Адрес проекта: https://foodgrammer.ddns.net/
+## Описание
 
-Админ:
-    login: adm@foodgram.ru
-    password: 251277
-
-# **Foodgram/Продуктовый помощник**
-
-# Знакомство
-
-**«Foodgram/Продуктовый помощник»** - это ресурс для пользователей о красивой и вкусной еде. Здесь польмзователи смогут не только познакомиться с разнообразными рецептами, но и  опубликовать свои. При желании можно подписаться на авторов или добавить отдельные рецепты в избранное. Отличительной особенностью ресурса является возможность сформировать список продуктов и их количество по выбранным рецептам. Приятного аппетита!
- 
-# Описание функционала
-
-- Рецепты нотсортированны по дате публикации (от новых к старым).
+**«Foodgram»** - это ресурс для пользователей о красивой и вкусной еде. Здесь польмзователи смогут не только познакомиться с разнообразными рецептами, но и  опубликовать свои. 
+- Рецепты отсортированны по дате публикации (от новых к старым).
 - Рецепты фильтруются по тегам (категориям рецептов).
 - Рецепты разбиты по страницам (т.н. пагинация).
 При этом:
@@ -28,7 +17,68 @@
 - _Администратор_:
   * имеет полный доступ (чтение и редактирование/удаление) ко всем моелям в "админке"
 
-# API-endpoint
+Применена пагинация и фильтрация по тегам (категории рецептов).
+Проект запускается на удалённом сервере в трёх контейнерах: nginx, PostgreSQL и Django+Gunicorn. Контейнер с проектом обновляется на Docker Hub.
+Данные сохраняются в volumes.
+ 
+### Технологии
+Python, Django, Django Rest Framework, Docker, Gunicorn, NGINX, PostgreSQL
+
+### Запуск проекта на удаленном сервере
+- Установить на сервере Docker, Docker Compose
+```
+sudo apt install curl                                   # установка утилиты для скачивания файлов
+curl -fsSL https://get.docker.com -o get-docker.sh      # скачать скрипт для установки
+sh get-docker.sh                                        # запуск скрипта
+sudo apt-get install docker-compose-plugin              # последняя версия docker compose
+```
+- Клонировать репозиторий
+- Скопировать на сервер файлы docker-compose.yml, nginx.conf из папки infra:
+```
+scp docker-compose.yml nginx.conf username@IP:/home/username/   # username - имя пользователя на сервере
+                                                                # IP - публичный IP сервера
+```
+- Заполнить переменные в разделе Secrets > Actions для работы с GitHub Actions:
+```
+SECRET_KEY              # секретный ключ Django проекта
+DOCKER_PASSWORD         # пароль от Docker Hub
+DOCKER_USERNAME         # логин Docker Hub
+HOST                    # публичный IP сервера
+USER                    # имя пользователя на сервере
+PASSPHRASE              # *если ssh-ключ защищен паролем
+SSH_KEY                 # приватный ssh-ключ
+TELEGRAM_TO             # ID телеграм-аккаунта для посылки сообщения
+TELEGRAM_TOKEN          # токен бота, посылающего сообщение
+DB_ENGINE               # django.db.backends.postgresql
+POSTGRES_DB             # postgres
+POSTGRES_USER           # postgres
+POSTGRES_PASSWORD       # postgres
+DB_HOST                 # db
+DB_PORT                 # 5432 (порт по умолчанию)
+```
+- Создать и запустить контейнеры Docker, выполнить команду на сервере :
+```
+sudo docker compose up -d
+```
+После успешной сборки выполнить миграции:
+sudo docker compose exec backend python manage.py migrate
+Создать суперпользователя:
+sudo docker compose exec backend python manage.py createsuperuser
+Собрать статику:
+sudo docker compose exec backend python manage.py collectstatic --noinput
+Наполнить базу данных содержимым из файла ingredients.json:
+sudo docker compose exec backend python manage.py loaddata ingredients.json
+Для остановки контейнеров Docker:
+sudo docker compose down -v      # с их удалением
+sudo docker compose stop         # без удаления
+После каждого обновления репозитория (push в ветку master) будет происходить:
+Проверка кода на соответствие стандарту PEP8 (с помощью пакета flake8)
+Сборка и доставка докер-образов frontend и backend на Docker Hub
+Разворачивание проекта на удаленном сервере
+Отправка сообщения в Telegram в случае успеха
+
+
+### API-endpoints
 
 - просмотр списка пользователей и добавление нового пользователя **GET, POST**: /api/users/
 - просмотр пользователя **GET**: /api/users/<id>/
@@ -40,3 +90,6 @@
 - добавить/удалить рецепт в список избранного **POST, DELETE**: /api/recipes/<id>/favorite/
 - подписаться/отписаться на автора **POST, DELETE**: /api/recipes/<id>/subscribe/
 - просмотр списка подписок **GET**:/api/recipes/subscriptions
+
+### Авторы
+Максим и команда Практикума
